@@ -1,9 +1,14 @@
 import telebot from 'telebot';
 import dotenv from "dotenv";
+import express from "express";
 
 dotenv.config()
 
-const bot = new telebot(process.env.TOKEN)
+const app = express()
+
+const bot = new telebot({
+    token: process.env.TOKEN
+})
 
 /* class Perfil {
     constructor(apodo = "", foto = null, lugar = "", habilidad = "", motivo = "") {
@@ -49,7 +54,6 @@ const bot = new telebot(process.env.TOKEN)
 try {
 
     //var perfil = new Perfil()
-    console.log(process.env.PROD == "false")
 
     if (process.env.PROD == "false") {
         bot.on('text', (msg) => {
@@ -70,7 +74,13 @@ try {
         }
     })
 
-    bot.start()
+    var PORT = process.env.PORT || 3000
+
+    
+    app.listen(PORT, () => {
+        bot.start()
+        console.log(`bot corriendo en el puerto ${PORT}`)
+    })
 
 } catch (error) {
     console.log(error)
